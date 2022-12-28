@@ -3,7 +3,13 @@ import { useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
+
+  const [title, setTitle] = useState("");
+  const [description,setDescription] =  useState("")
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [image, setImage] = useState(null);
+
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
@@ -34,22 +40,51 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
-        <link rel="icon" href="/dog.png" />
+        <title>Poster Generator</title>
       </Head>
 
       <main className={styles.main}>
-        <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <h3>Generate poster</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
             name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
-          <input type="submit" value="Generate names" />
+
+          <input
+            type="text"
+            name="animal"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+
+          <input
+            type="text"
+            name="animal"
+            placeholder="Phone number"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+
+          
+          <input
+            type="text"
+            name="animal"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label for="file">Select a file:</label>
+          <input type='file' id="file" value={image}
+            onChange={(e) => setImage(e.target.value)}
+          />
+
+          <input className="submit" type="submit" value="Generate Poster" />
         </form>
         <div className={styles.result}>{result}</div>
       </main>

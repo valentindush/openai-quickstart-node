@@ -60,6 +60,7 @@
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
+  margin-top: 20px;
 }
 .main .result {
   font-weight: bold;
