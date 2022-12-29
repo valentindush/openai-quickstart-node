@@ -8,33 +8,30 @@ export default function Home() {
   const [description,setDescription] =  useState("")
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
 
-  const [result, setResult] = useState();
+  const [resultImageUrl, setResultImageUrl] = useState();
+
+  const [showImg, setShowImg] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(event) {
     event.preventDefault();
-    try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ animal: animalInput }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      setResult(data.result);
-      setAnimalInput("");
-    } catch(error) {
-      // Consider implementing your own error handling logic here
-      console.error(error);
-      alert(error.message);
-    }
+    setLoading(true);
+    const response = await fetch('/api/generator', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          prompt: `create a business poster for ${title} with desription ${description}, email ${email} and phone number ${phoneNumber}`,
+      })
+    });
+    setLoading(false);
+    const imageResponse = await response.json();
+    setResultImageUrl(imageResponse.imageURL);
+    setShowImg(true);
   }
 
   return (
@@ -86,7 +83,19 @@ export default function Home() {
 
           <input className="submit" type="submit" value="Generate Poster" />
         </form>
-        <div className={styles.result}>{result}</div>
+        <div className={styles.result}>
+
+
+          {(resultImageUrl && showImg) && 
+          <div className={styles.box}>
+            <p>Generated Image</p>
+
+            <img src={resultImageUrl} />
+
+            <button onClick={()=>setShowImg(false)}>Close</button>
+          </div>}
+        </div>
+        {loading && <p>Generating poster please wait...</p>}
       </main>
     </div>
   );
